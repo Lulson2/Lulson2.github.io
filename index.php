@@ -8,14 +8,37 @@
     <title>Document</title>
 </head>
 <?php
-$con = mysqli_init();
-mysqli_ssl_set($con, NULL, NULL, "DigiCertGlobalRootCA.crt.pem", NULL, NULL);
-$conn = mysqli_real_connect($con, "milijonar.mysql.database.azure.com", "milijonar_koda4", "Koda1234!", "test", 3306, MYSQLI_CLIENT_SSL);
+// Database connection details
+$host = "sql303.epizy.com";
+$username = "epiz_33963503";
+$password = "0XYpGgygXZVRG";
+$dbname = "epiz_33963503_milijonar";
 
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+// Create connection
+$conn = new mysqli($host, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-echo "Connected successfully";
+
+// Fetch users from database
+$sql = "SELECT * FROM users";
+$result = $conn->query($sql);
+
+// Display users in a table
+if ($result->num_rows > 0) {
+    echo "<table id='users'><thead><tr><th>Name</th><th>Email</th><th>Role</th></tr></thead><tbody>";
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr><td>" . $row["name"] . "</td><td>" . $row["email"] . "</td><td>" . $row["role"] . "</td></tr>";
+    }
+    echo "</tbody></table>";
+} else {
+    echo "No users found.";
+}
+
+$conn->close();
 ?>
 
 <body>
