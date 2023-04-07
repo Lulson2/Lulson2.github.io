@@ -9,8 +9,13 @@
 </head>
 <?php
 $con = mysqli_init();
-mysqli_ssl_set($con, NULL, NULL, "{path to CA cert}", NULL, NULL);
-mysqli_real_connect($conn, "milijonar.mysql.database.azure.com", "milijonar_koda4", "Koda1234!", "test", 3306, MYSQLI_CLIENT_SSL);
+mysqli_ssl_set($con, NULL, NULL, "DigiCertGlobalRootCA.crt.pem", NULL, NULL);
+$conn = mysqli_real_connect($con, "milijonar.mysql.database.azure.com", "milijonar_koda4", "Koda1234!", "test", 3306, MYSQLI_CLIENT_SSL);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+echo "Connected successfully";
 ?>
 
 <body>
